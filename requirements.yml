@@ -1,0 +1,11 @@
+name: ERA5_CESM2_interp
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - numpy~=1.26.4
+  - xarray~=2024.2.0
+  - tqdm~=4.66
+
+# To create the environment, run:
+# conda env create -f requirements.yml
