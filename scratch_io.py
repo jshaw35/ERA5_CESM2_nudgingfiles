@@ -37,8 +37,8 @@ timein = [
 
 daysinmonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-DATA_PATH = '/glade/derecho/scratch/glydia/inputdata/nudging/'
-SAVE_PATH = '/glade/campaign/univ/ucub0137/ERA5_CESM2_nudging'
+DATA_PATH = '/glade/derecho/scratch/jonahshaw/ERA5regrid/'
+SAVE_PATH = '/glade/campaign/univ/ucuc0007/ERA5_CESM2_surfaceinterp'
 
 def split_files(cyr,cmonth,cday):
     # Set input data file paths

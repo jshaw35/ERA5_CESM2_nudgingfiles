@@ -36,7 +36,7 @@ daysinmonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 #month = ['10', '11', '12']
 
 DATA_VARS = set(['V', 'T', 'U', 'PS', 'Q'])
-SAVE_PATH = '/glade/campaign/univ/ucub0137/ERA5_CESM2_nudging'
+SAVE_PATH = '/glade/campaign/univ/ucuc0007/ERA5_CESM2_surfaceinterp'
 
 nlat = 192
 nlon =288

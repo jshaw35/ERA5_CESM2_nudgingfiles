@@ -13,18 +13,22 @@ variable = [
 
 year = ['2010'] 
 
+# day = [
+#     '01', '02', '03',
+#     '04', '05', '06',
+#     '07', '08', '09',
+#     '10', '11', '12',
+#     '13', '14', '15',
+#     '16', '17', '18',
+#     '19', '20', '21',
+#     '22', '23', '24',
+#     '25', '26', '27',
+#     '28', '29', '30',
+#     '31'
+# ]
+
 day = [
-    '01', '02', '03',
-    '04', '05', '06',
-    '07', '08', '09',
-    '10', '11', '12',
-    '13', '14', '15',
-    '16', '17', '18',
-    '19', '20', '21',
-    '22', '23', '24',
-    '25', '26', '27',
-    '28', '29', '30',
-    '31'
+    '01',
 ]
 
 time = [
@@ -56,18 +60,26 @@ levs = {
     'specific_humidity':'ll025sc'
 }
 
-DATA_PATH = '/glade/campaign/collections/rda/data/ds633.0/e5.oper.an.'
-SAVE_PATH = '/glade/derecho/scratch/glydia/inputdata/nudging/ERA5regrid'
+# DATA_PATH = '/glade/campaign/collections/rda/data/ds633.0/e5.oper.an.'
+# DATA_PATH = '/gdex/data/d633000/e5.oper.an.sfc/' # gdex path to surface fields
+# SAVE_PATH = '/glade/derecho/scratch/glydia/inputdata/nudging/ERA5regrid'
+DATA_PATH = '/gdex/data/d633000/e5.oper.an.pl/' # gdex path to level fields
+SAVE_PATH = '/glade/derecho/scratch/jonahshaw/ERA5regrid'
+TEMP_PATH = '/glade/derecho/scratch/jonahshaw/temp/'
 
 def interpolate_data(cvar, cday, cmonth, cyr):
     # Set variables and paths
     var_alias = var_aliases[cvar]
     lev = levs[cvar]
 
-    DATA_PATH_I = DATA_PATH+'pl'
+    # DATA_PATH_I = DATA_PATH+'pl'
 
-    cfile = os.path.join(DATA_PATH_I, f'{cyr}{cmonth}',f'e5.oper.an.pl.128_{var_alias}.{lev}.{cyr}{cmonth}{cday}00_{cyr}{cmonth}{cday}23.nc')
+    cfile = os.path.join(DATA_PATH, f'{cyr}{cmonth}',f'e5.oper.an.pl.128_{var_alias}.{lev}.{cyr}{cmonth}{cday}00_{cyr}{cmonth}{cday}23.nc')
     ofile = os.path.join(SAVE_PATH,f'e5.oper.an.pl.128_{var_alias}.regrid.{cyr}{cmonth}day{int(cday)}.nc')
+
+    # Create the temp directory if it does not exist
+    if not os.path.exists(TEMP_PATH):
+        os.makedirs(TEMP_PATH)
 
     # Exit if file exists
     if os.path.isfile(ofile):
@@ -75,9 +87,9 @@ def interpolate_data(cvar, cday, cmonth, cyr):
         return
 
     # Regrid & interpolate vertically
-    os.system(f"cdo -f nc4 -remapbil,cdo_grid.txt -setgridtype,regular {cfile} tempFiles/temp-{var_alias}-{cyr}-{cmonth}-{cday}.nc")
-    os.system(f"cdo intlevel,3.64346569404006,7.59481964632869,14.3566322512925,24.6122200042009,35.9232500195503,43.1937500834465,51.6774989664555,61.5204982459545,73.7509578466415,87.8212302923203,103.317126631737,121.547240763903,142.994038760662,168.225079774857,197.908086702228,232.828618958592,273.910816758871,322.241902351379,379.100903868675,445.992574095726,524.687174707651,609.778694808483,691.389430314302,763.404481112957,820.858368650079,859.53476652503,887.020248919725,912.644546944648,936.198398470879,957.485479535535,976.325407391414,992.556095123291 tempFiles/temp-{var_alias}-{cyr}-{cmonth}-{cday}.nc ERA5regrid/e5.oper.an.pl.128_{var_alias}.regrid.{cyr}{cmonth}day{int(cday)}.nc")
-    os.system(f"rm -f tempFiles/temp-{var_alias}-{cyr}-{cmonth}-{cday}.nc")
+    os.system(f"cdo -f nc4 -remapbil,cdo_grid.txt -setgridtype,regular {cfile} {TEMP_PATH}/temp-{var_alias}-{cyr}-{cmonth}-{cday}.nc")
+    os.system(f"cdo intlevel,3.64346569404006,7.59481964632869,14.3566322512925,24.6122200042009,35.9232500195503,43.1937500834465,51.6774989664555,61.5204982459545,73.7509578466415,87.8212302923203,103.317126631737,121.547240763903,142.994038760662,168.225079774857,197.908086702228,232.828618958592,273.910816758871,322.241902351379,379.100903868675,445.992574095726,524.687174707651,609.778694808483,691.389430314302,763.404481112957,820.858368650079,859.53476652503,887.020248919725,912.644546944648,936.198398470879,957.485479535535,976.325407391414,992.556095123291 {TEMP_PATH}/temp-{var_alias}-{cyr}-{cmonth}-{cday}.nc {SAVE_PATH}/e5.oper.an.pl.128_{var_alias}.regrid.{cyr}{cmonth}day{int(cday)}.nc")
+    os.system(f"rm -f {TEMP_PATH}/temp-{var_alias}-{cyr}-{cmonth}-{cday}.nc")
 
 def main():
     for cyr in year:

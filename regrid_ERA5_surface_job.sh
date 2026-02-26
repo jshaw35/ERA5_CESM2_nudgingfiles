@@ -10,5 +10,6 @@ module load conda
 module load cdo
 conda activate ERA5_CESM2_interp
 
-# python3 /glade/derecho/scratch/glydia/inputdata/nudging/regrid_ERA5original_32.py
-python3 /glade/u/home/jonahshaw/Scripts/git_repos/ERA5_CESM2_nudgingfiles/regrid_ERA5original_32.py
+python3 /glade/u/home/jonahshaw/Scripts/git_repos/ERA5_CESM2_nudgingfiles/regrid_ERA5_surface.py
+
+# Run with: qsub regrid_ERA5_surface_job.sh
